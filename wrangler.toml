@@ -126,8 +126,9 @@ migrations_dir = "migrations"
 # KV namespace for file attachments (optional, no credit card required)
 # KV has a 25MB limit per file, but doesn't require credit card binding.
 # If R2 is not configured, KV will be used for attachments.
-[[kv_namespaces]]
-binding = "ATTACHMENTS_KV"
+# [[kv_namespaces]]
+# binding = "ATTACHMENTS_KV"
+# id = "YOUR_ATTACHMENTS_KV_NAMESPACE_ID"
 
 [env.dev]
 name = "warden-worker-dev"
