@@ -2,7 +2,9 @@
 
 公開先は `https://warden.darask.win`。Web画面・API・通知を同じホスト名のCloudflare Accessで保護します。`workers.dev`とプレビューURLは無効です。
 
-サイト入口とWARP端末登録は `mail@darask.win` に届くメールOTPで認証します。保管庫の既存アカウントは `google@darask.me` です。保管庫はこのメールアドレスと既存のマスターパスワードで開きます。ドメイン移行で保管庫を作り直す必要はありません。
+サイト入口とWARP端末登録は `mail@darask.win` に届くメールOTPで認証します。保管庫にも `mail@darask.win` を使用し、登録時に設定したマスターパスワードで開きます。メールOTPはサイト入口の認証で、保管庫の復号にはマスターパスワードが必要です。
+
+2026年9月21日: `mail@darask.win` の登録と保管庫へのログインを確認済みです。このWardenにはメールアドレス変更機能がないため、旧アカウントが空であることを確認し、新しいメールで登録しました。旧アカウントは削除していません。
 
 ## 機能
 
@@ -19,11 +21,11 @@ Web画面は不要な組織向け機能、Send、レポートをメニューか�
 ## 利用端末の設定
 
 1. `https://warden.darask.win` を開き、`mail@darask.win` に届くコードでAccess認証する。
-2. 保管庫には `google@darask.me` と既存のマスターパスワードでログインする。メールOTPだけでは保管庫を復号できない。
+2. 保管庫には `mail@darask.win` と登録時に設定したマスターパスワードでログインする。メールOTPだけでは保管庫を復号できない。
 3. Bitwarden拡張機能やアプリを使う端末に[Cloudflare One Client](https://developers.cloudflare.com/cloudflare-one/team-and-resources/devices/cloudflare-one-client/download/)をインストールする。
 4. Cloudflare One ClientでZero Trust組織 `darask` にログインし、`mail@darask.win` のメールOTPで登録する。個人用の1.1.1.1モードだけでは不十分。以前のGoogleアカウントで登録済みの端末は、Zero Trustからログアウトして新しいメールアドレスで再登録する。
 5. Bitwardenのログイン画面でセルフホスト環境を選び、サーバーURLを `https://warden.darask.win` にする。既存の端末は、未同期の変更がないことを確認してから接続先を切り替える。
-6. WARPに接続してから保管庫の `google@darask.me` とマスターパスワードでログインする。
+6. WARPに接続してから保管庫の `mail@darask.win` とマスターパスワードでログインする。
 
 Cloudflare One Clientのセッションが期限切れになったら再認証する。ブラウザーでメールOTP認証しただけでは、別プロセスの拡張機能／アプリにAccessセッションは渡らない。
 
@@ -43,12 +45,12 @@ Web保管庫自体から、別のサイトの入力欄を自動操作するこ�
 - WARPの端末登録: `mail@darask.win` のメールOTPのみ。
 - Cloudflare One Clientセッション認証: 有効。アプリ側はWardenに対して有効。全アプリへの一括適用はオフ。セッション8時間。
 - D1: 専用データベース `warden-vault` を `vault1` にバインド。
-- Worker Secrets: `ALLOWED_EMAILS`、別々のランダム値の `JWT_SECRET` と `JWT_REFRESH_SECRET`。
+- Worker Secrets: `ALLOWED_EMAILS=mail@darask.win`、別々のランダム値の `JWT_SECRET` と `JWT_REFRESH_SECRET`。
 - 添付ファイルのKV/R2は任意。今回の初期構成はD1のみ。
 
 `DISABLE_USER_REGISTRATION`はクライアント向けの表示設定で、登録APIの許可判定は `ALLOWED_EMAILS` が行います。
 
-既存保管庫のメールアドレスは鍵導出に使われるため、データベースの値だけを書き換えてはいけません。今回の移行ではD1・保管庫のアカウント・`ALLOWED_EMAILS`・JWT Secretsを引き継ぎます。
+既存保管庫のメールアドレスは鍵導出に使われるため、データベースの値だけを書き換えてはいけません。登録の許可先だけを新しいメールに変更し、D1とJWT Secretsは引き継ぎます。`ALLOWED_EMAILS` の変更は、既存アカウントを削除したりログインを無効化したりするものではありません。
 
 ## 更新
 
