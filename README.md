@@ -1,6 +1,6 @@
 # Warden: A Bitwarden-compatible server for Cloudflare Workers
 
-Personal configuration for `warden.darask.me`: [日本語の使い方・Google/WARP設定](docs/personal-vault.md).
+Personal configuration for `warden.darask.win`: [日本語の使い方・メールOTP/WARP設定](docs/personal-vault.md).
 
 [![Powered by Cloudflare](https://img.shields.io/badge/Powered%20by-Cloudflare-F38020?logo=cloudflare&logoColor=white)](https://www.cloudflare.com/)
 [![License](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)

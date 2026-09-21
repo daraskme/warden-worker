@@ -4,7 +4,7 @@ compatibility_date = "2025-09-19"
 keep_vars = true
 workers_dev = false
 preview_urls = false
-routes = [{ pattern = "warden.darask.me", custom_domain = true }]
+routes = [{ pattern = "warden.darask.win", custom_domain = true }]
 
 [durable_objects]
 bindings = [
@@ -57,7 +57,7 @@ run_worker_first = ["/api/*", "/identity/*", "/notifications/*"]
 [vars]
 # Base URL for the worker, used for generating up/down URLs for files.
 # If not set, the base URL will be extracted from the incoming request.
-BASE_URL = "https://warden.darask.me"
+BASE_URL = "https://warden.darask.win"
 # Show account creation for the owner; ALLOWED_EMAILS still enforces registration.
 DISABLE_USER_REGISTRATION = "false"
 

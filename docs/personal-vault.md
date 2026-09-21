@@ -1,6 +1,8 @@
 # 個人用 Warden
 
-公開先は `https://warden.darask.me`。Web画面・API・通知を同じホスト名のCloudflare Accessで保護します。`workers.dev`とプレビューURLは無効です。
+公開先は `https://warden.darask.win`。Web画面・API・通知を同じホスト名のCloudflare Accessで保護します。`workers.dev`とプレビューURLは無効です。
+
+サイト入口とWARP端末登録は `mail@darask.win` に届くメールOTPで認証します。保管庫の既存アカウントは `google@darask.me` です。保管庫はこのメールアドレスと既存のマスターパスワードで開きます。ドメイン移行で保管庫を作り直す必要はありません。
 
 ## 機能
 
@@ -14,16 +16,16 @@
 
 Web画面は不要な組織向け機能、Send、レポートをメニューから隠し、生成・インポート・エクスポート・セキュリティ設定を残しています。機能を削除したり、暗号化を変更したりはしていません。ライトテーマの色、入力欄、コピー操作のタップ領域を調整しています。ダーク／高コントラストテーマは上流の配色を維持します。
 
-## 最初の利用
+## 利用端末の設定
 
-1. Cloudflare Accessで許可したGoogleアカウントでサイトを開く。
-2. 同じメールアドレスでWardenのアカウントを作る。マスターパスワードは本人が設定し、安全に保管する。Google認証だけでは保管庫を復号できない。
-3. Bitwarden拡張機能やアプリを使う端末にCloudflare One Clientをインストールする。
-4. Cloudflare One ClientでZero Trust組織 `darask` にログインし、許可したGoogleアカウントで登録する。個人用の1.1.1.1モードだけでは不十分。
-5. Bitwardenのログイン画面でセルフホスト環境を選び、サーバーURLを `https://warden.darask.me` にする。
-6. WARPに接続してからWardenのメールアドレス・マスターパスワードでログインする。
+1. `https://warden.darask.win` を開き、`mail@darask.win` に届くコードでAccess認証する。
+2. 保管庫には `google@darask.me` と既存のマスターパスワードでログインする。メールOTPだけでは保管庫を復号できない。
+3. Bitwarden拡張機能やアプリを使う端末に[Cloudflare One Client](https://developers.cloudflare.com/cloudflare-one/team-and-resources/devices/cloudflare-one-client/download/)をインストールする。
+4. Cloudflare One ClientでZero Trust組織 `darask` にログインし、`mail@darask.win` のメールOTPで登録する。個人用の1.1.1.1モードだけでは不十分。以前のGoogleアカウントで登録済みの端末は、Zero Trustからログアウトして新しいメールアドレスで再登録する。
+5. Bitwardenのログイン画面でセルフホスト環境を選び、サーバーURLを `https://warden.darask.win` にする。既存の端末は、未同期の変更がないことを確認してから接続先を切り替える。
+6. WARPに接続してから保管庫の `google@darask.me` とマスターパスワードでログインする。
 
-Cloudflare One Clientのセッションが期限切れになったら再認証する。ブラウザーでGoogleログインしただけでは、別プロセスの拡張機能／アプリにAccessセッションは渡らない。
+Cloudflare One Clientのセッションが期限切れになったら再認証する。ブラウザーでメールOTP認証しただけでは、別プロセスの拡張機能／アプリにAccessセッションは渡らない。
 
 ## TOTPの自動生成・入力
 
@@ -35,16 +37,18 @@ Web保管庫自体から、別のサイトの入力欄を自動操作するこ�
 
 ## Cloudflare設定
 
-- Access: ホスト名 `warden.darask.me`、パスは空欄（全体を保護）。WebSocketを使うためWorker単位ではなくホスト名で保護。
-- IDプロバイダー: 既存のGoogleだけを選択。インスタント認証を有効化。
-- Allowポリシー: 所有者のメールアドレスを完全一致で1件のみ指定。Bypassルールなし。
-- WARPの端末登録: 同じ所有者のメールアドレス、Google認証のみ。
+- Access: ホスト名 `warden.darask.win`、パスは空欄（全体を保護）。WebSocketを使うためWorker単位ではなくホスト名で保護。
+- IDプロバイダー: One-time PIN（メールOTP）のみ。
+- Allowポリシー: `mail@darask.win` を完全一致で1件のみ指定。Bypassルールなし。
+- WARPの端末登録: `mail@darask.win` のメールOTPのみ。
 - Cloudflare One Clientセッション認証: 有効。アプリ側はWardenに対して有効。全アプリへの一括適用はオフ。セッション8時間。
 - D1: 専用データベース `warden-vault` を `vault1` にバインド。
 - Worker Secrets: `ALLOWED_EMAILS`、別々のランダム値の `JWT_SECRET` と `JWT_REFRESH_SECRET`。
 - 添付ファイルのKV/R2は任意。今回の初期構成はD1のみ。
 
 `DISABLE_USER_REGISTRATION`はクライアント向けの表示設定で、登録APIの許可判定は `ALLOWED_EMAILS` が行います。
+
+既存保管庫のメールアドレスは鍵導出に使われるため、データベースの値だけを書き換えてはいけません。今回の移行ではD1・保管庫のアカウント・`ALLOWED_EMAILS`・JWT Secretsを引き継ぎます。
 
 ## 更新
 
