@@ -73,3 +73,94 @@ bit-nav-logo bit-nav-item a:before {
 bit-nav-logo bit-nav-item .bwi-shield {
   display: none !important;
 }
+
+/* Personal vault: a quieter surface, using the upstream theme tokens so dark
+   and high-contrast modes retain their own accessible colors. No credential
+   values, cryptography, or application state are changed by this stylesheet. */
+html.theme_light {
+  --color-primary-600: 40 91 81;
+  --color-primary-700: 29 68 61;
+  --color-primary-100: 237 245 241;
+  --color-background: 255 255 255;
+  --color-background-alt: 246 248 247;
+  --color-text-main: 30 42 39;
+  --color-text-muted: 90 104 98;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans JP", sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Keep vault, generator, import/export and security settings available. */
+app-user-layout bit-nav-item[route="reports"],
+app-user-layout bit-nav-item[route="sends"],
+app-user-layout bit-nav-item[route="organizations"],
+app-user-layout bit-nav-item[route="settings/organizations"] {
+  display: none !important;
+}
+
+.theme_light .new-logo-themed {
+  content: url("../images/warden-wordmark.svg");
+  object-fit: contain;
+}
+
+bit-form-field input:not([type="checkbox"]):not([type="radio"]),
+bit-form-field textarea {
+  font-size: 1rem;
+  line-height: 1.5;
+}
+
+bit-form-field textarea {
+  min-height: 7rem;
+}
+
+app-vault-items tr {
+  height: 3.75rem;
+}
+
+app-vault-items td {
+  vertical-align: middle;
+}
+
+app-cipher-view,
+app-cipher-form {
+  overflow-wrap: anywhere;
+}
+
+/* A visible focus ring is especially useful around icon-only copy actions. */
+:where(button, a, input, textarea, select):focus-visible {
+  outline: 2px solid rgb(var(--color-primary-600));
+  outline-offset: 3px;
+}
+
+@media (max-width: 767px) {
+  /* The upstream bundle is desktop-first; allow its fixed-width panels and
+     dialogs to shrink after replacing the fixed 1010px viewport. */
+  app-root, app-user-layout, main, bit-layout, bit-layout-main {
+    min-width: 0 !important;
+  }
+
+  bit-dialog, .cdk-overlay-pane {
+    max-width: calc(100vw - 1rem) !important;
+  }
+
+  app-vault-items {
+    display: block;
+    max-width: 100%;
+    overflow-x: auto;
+  }
+
+  bit-form-field input:not([type="checkbox"]):not([type="radio"]),
+  bit-form-field textarea,
+  bit-form-field select {
+    font-size: 16px; /* Avoid Safari zooming each time an input is focused. */
+  }
+
+  app-vault-items button,
+  app-cipher-view button,
+  app-cipher-form button {
+    min-height: 2.75rem;
+    min-width: 2.75rem;
+  }
+}

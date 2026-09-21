@@ -1,0 +1,41 @@
+name: Build personal vault
+on:
+  push:
+    branches: ["personal/**"]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5
+      - uses: actions/setup-node@53b83947a5a98c8d113130e565377fae1a50d02f
+        with:
+          node-version: "24"
+      - name: Set up Rust
+        run: |
+          rustup toolchain install 1.91.1 --profile minimal --component rustfmt --target wasm32-unknown-unknown
+          echo RUSTUP_TOOLCHAIN=1.91.1 >> "$GITHUB_ENV"
+      - name: Check formatting and build Worker
+        run: |
+          cargo fmt -- --check
+          cargo install --locked -q worker-build --version 0.8.5
+          worker-build --release --locked
+      - name: Prepare pinned frontend
+        run: |
+          curl -fL --retry 3 -o web-vault.tar.gz https://github.com/dani-garcia/bw_web_builds/releases/download/v2026.6.4/bw_web_v2026.6.4.tar.gz
+          tar -xzf web-vault.tar.gz -C public/
+          find public/web-vault -type f -name '*.map' -delete
+          node scripts/apply-web-vault-overrides.mjs
+      - uses: actions/upload-artifact@v4
+        with:
+          name: warden-personal
+          retention-days: 7
+          path: |
+            build/
+            src/entry.js
+            public/web-vault/
+            wrangler.toml
+            sql/schema.sql
+            migrations/
