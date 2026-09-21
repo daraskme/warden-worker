@@ -89,7 +89,7 @@ jobs:
 
       - name: Apply web vault overrides (vaultwarden.css)
         run: |
-          mkdir -p public/web-vault/css/ && cp public/css/vaultwarden.css public/web-vault/css/
+          node scripts/apply-web-vault-overrides.mjs
 
       - name: Replace D1_DATABASE_ID_DEV in wrangler.toml
         run: sed -i "s/\${D1_DATABASE_ID_DEV}/${{ secrets.D1_DATABASE_ID_DEV }}/g" wrangler.toml

@@ -2,6 +2,7 @@ target
 node_modules
 .wrangler
 .env
+.dev.vars*
 # Frontend files (downloaded during deployment/development)
 public/web-vault/
 

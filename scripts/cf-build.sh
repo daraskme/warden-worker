@@ -86,8 +86,7 @@ fi
 # Drop source maps to satisfy Cloudflare's per-file static asset size limit.
 find public/web-vault -type f -name '*.map' -delete
 # Apply the lightweight UI override.
-mkdir -p public/web-vault/css/
-cp public/css/vaultwarden.css public/web-vault/css/
+node scripts/apply-web-vault-overrides.mjs
 echo "Frontend ready in public/web-vault"
 
 # ---------------------------------------------------------------------------

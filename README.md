@@ -1,5 +1,7 @@
 # Warden: A Bitwarden-compatible server for Cloudflare Workers
 
+Personal configuration for `warden.darask.win`: [日本語の使い方・メールOTP/WARP設定](docs/personal-vault.md).
+
 [![Powered by Cloudflare](https://img.shields.io/badge/Powered%20by-Cloudflare-F38020?logo=cloudflare&logoColor=white)](https://www.cloudflare.com/)
 [![License](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 [![Deploy to Cloudflare Workers](https://img.shields.io/badge/Deploy%20to-Cloudflare%20Workers-orange?logo=cloudflare&logoColor=white)](https://workers.cloudflare.com/)
@@ -96,7 +98,7 @@ The frontend is bundled with the Worker using [Cloudflare Workers Static Assets]
 **UI overrides (optional):**
 - This project ships a small set of "lightweight self-host" UI tweaks in `public/css/`.
 - In CI/CD (and optionally locally), we apply them after extracting `bw_web_builds`:
-  - `mkdir -p public/web-vault/css/ && cp public/css/vaultwarden.css public/web-vault/css/`
+  - `node scripts/apply-web-vault-overrides.mjs`
 
 > [!NOTE]
 > Migrating from separate frontend deployment? If you previously deployed the frontend separately to Cloudflare Pages, you can delete the `warden-frontend` Pages project and re-setup the router for the worker. The frontend is now bundled with the Worker and no longer requires a separate deployment.

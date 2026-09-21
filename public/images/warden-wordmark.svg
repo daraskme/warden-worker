@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="200" height="44" viewBox="0 0 200 44" role="img" aria-label="Warden">
+  <rect x="2" y="4" width="36" height="36" rx="10" fill="none" stroke="#285b51" stroke-width="2"/>
+  <path d="m11 15 4 15 5-10 5 10 4-15" fill="none" stroke="#285b51" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+  <text x="51" y="31" font-family="system-ui,Segoe UI,sans-serif" font-size="28" font-weight="650" letter-spacing="-1" fill="#285b51">Warden</text>
+</svg>
