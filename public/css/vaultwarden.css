@@ -104,7 +104,10 @@ body {
 app-user-layout bit-nav-item[route="reports"],
 app-user-layout bit-nav-item[route="sends"],
 app-user-layout bit-nav-item[route="organizations"],
-app-user-layout bit-nav-item[route="settings/organizations"] {
+app-user-layout bit-nav-item[route="settings/organizations"],
+app-user-layout app-vault-onboarding,
+app-user-layout product-switcher,
+app-user-layout a[href="#/create-organization"] {
   display: none !important;
 }
 
@@ -119,6 +122,20 @@ app-user-layout bit-nav-item[route="settings/organizations"] {
 
 .theme_light .layout_frontend a[href="#/"] > bit-svg > svg {
   visibility: hidden;
+}
+
+.theme_light bit-nav-logo a > bit-svg {
+  min-height: 49px;
+  background: url("../images/warden-wordmark.svg") left center / 200px 44px no-repeat;
+  filter: brightness(0) invert(1);
+}
+
+.theme_light bit-nav-logo a > bit-svg > svg {
+  visibility: hidden;
+}
+
+.theme_light bit-nav-logo a:has(> bit-svg)::before {
+  display: none;
 }
 
 .layout_frontend div[class*="tw-size-"]:has(> bit-svg[role="presentation"]),
